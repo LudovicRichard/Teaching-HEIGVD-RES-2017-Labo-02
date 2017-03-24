@@ -41,11 +41,11 @@ public class EphemeralClientServerPair extends ExternalResource {
       Logger.getLogger(EphemeralClientServerPair.class.getName()).log(Level.SEVERE, null, ex);
     }
     try {
-      server.stopServer();
-    } catch (IOException ex) {
-      Logger.getLogger(EphemeralClientServerPair.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    server.stopServer();
+  } catch (IOException ex) {
+    Logger.getLogger(EphemeralClientServerPair.class.getName()).log(Level.SEVERE, null, ex);
   }
+}
 
   public RouletteServer getServer() {
     return server;

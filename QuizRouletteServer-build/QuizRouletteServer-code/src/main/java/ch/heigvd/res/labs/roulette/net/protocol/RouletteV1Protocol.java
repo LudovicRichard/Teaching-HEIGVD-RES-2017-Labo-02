@@ -7,7 +7,7 @@ package ch.heigvd.res.labs.roulette.net.protocol;
  */
 public class RouletteV1Protocol {
   
-  public final static String VERSION = "1.0";
+  public final static String VERSION = "2.0";
 
   public final static int DEFAULT_PORT = 1313;
 
