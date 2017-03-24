@@ -32,5 +32,4 @@ public class QuizRouletteServer {
       Logger.getLogger(QuizRouletteServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
     }
   }
-
 }
