@@ -1,8 +1,8 @@
 package ch.heigvd.res.labs.roulette.net.client;
 
-import ch.heigvd.res.labs.roulette.data.EmptyStoreException;
 import ch.heigvd.res.labs.roulette.data.Student;
-import ch.heigvd.res.labs.roulette.net.protocol.RouletteV1Protocol;
+import ch.heigvd.res.labs.roulette.data.StudentsList;
+import ch.heigvd.res.labs.roulette.net.protocol.RouletteV2Protocol;
 import ch.heigvd.schoolpulse.TestAuthor;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,28 +26,33 @@ public class RouletteV2LuanaMartelliTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Rule
-    public EphemeralClientServerPair roulettePair = new EphemeralClientServerPair(RouletteV1Protocol.VERSION);
+    public EphemeralClientServerPair roulettePair = new EphemeralClientServerPair(RouletteV2Protocol.VERSION);
 
     @Test
     @TestAuthor(githubId = "LudovicRichard")
     public void theServerShouldBeEmptyAfterAClean() throws IOException {
-        IRouletteV2Client client = (IRouletteV2Client)(roulettePair.getClient());
+        final int port = roulettePair.getServer().getPort();
+        IRouletteV2Client client = new RouletteV2ClientImpl();
 
+        client.connect("localhost", port);
         client.loadStudent("John Smith");
         client.clearDataStore();
         assertEquals(client.getNumberOfStudents(), 0);
+        client.disconnect();
     }
 
     @Test
     @TestAuthor(githubId = "wasadigi")
     public void theServerShouldSendTheListOfStudentsCorrectly() throws IOException {
-        IRouletteV2Client client = (IRouletteV2Client)(roulettePair.getClient());
+        final int port = roulettePair.getServer().getPort();
+        IRouletteV2Client client = new RouletteV2ClientImpl();
         List<Student> newStudents = new ArrayList();
         List<Student> returnedList;
 
         newStudents.add(new Student("Ludovic Richard"));
         newStudents.add(new Student("Luana Martelli"));
 
+        client.connect("localhost", port);
         client.loadStudent("John Smith");
         client.loadStudents(newStudents);
         assertEquals(client.getNumberOfStudents(), 3);
@@ -58,5 +63,18 @@ public class RouletteV2LuanaMartelliTest {
         for(Student s : newStudents){
             assertTrue(returnedList.contains(s));
         }
+        client.disconnect();
+    }
+
+    @Test
+    @TestAuthor(githubId = "LudovicRichard")
+    public void theServerShouldGiveCorrectlyTheVersion() throws IOException {
+        final int port = roulettePair.getServer().getPort();
+        IRouletteV2Client client = new RouletteV2ClientImpl();
+
+        client.connect("localhost", port);
+        assertEquals(client.getProtocolVersion(), RouletteV2Protocol.VERSION);
+
+        client.disconnect();
     }
 }
