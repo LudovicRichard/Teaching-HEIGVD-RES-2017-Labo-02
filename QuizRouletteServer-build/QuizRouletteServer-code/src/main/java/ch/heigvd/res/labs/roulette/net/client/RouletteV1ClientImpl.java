@@ -26,9 +26,9 @@ public class RouletteV1ClientImpl implements IRouletteV1Client {
    * that is more specific than just write
    */
 
-  private static final Logger LOG = Logger.getLogger(RouletteV1ClientImpl.class.getName());
+  protected static final Logger LOG = Logger.getLogger(RouletteV1ClientImpl.class.getName());
 
-  private Socket socket = new Socket();
+  protected Socket socket = new Socket();
 
 
   @Override
